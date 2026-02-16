@@ -15,9 +15,17 @@
     {
       "src": "style.css",
       "use": "@vercel/static"
+    },
+    {
+      "src": "assets/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "assets/**",
+      "use": "@vercel/static"
+    },
     {
       "src": "/api/(.*)",
       "dest": "api/main.py"

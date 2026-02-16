@@ -1,6 +1,7 @@
 const API_URL = "/api";
 let html5QrCode = null;
 let isProcessing = false;
+const SCAN_SOUND = new Audio('/assets/confirm.mp3');
 
 async function startScanner() {
     if (html5QrCode) return;
@@ -53,6 +54,9 @@ async function onScanSuccess(decodedText) {
     // Ejecutar envío
     submitAssistance(decodedText).then((data) => {
         if (data) {
+            // Pitido de confirmación
+            SCAN_SOUND.play().catch(e => console.warn("Error audio:", e));
+
             // Mostrar overlay de éxito
             document.getElementById("scanResultName").textContent = data.student_name;
             document.getElementById("successOverlay").classList.add("active");
