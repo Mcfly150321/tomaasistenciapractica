@@ -94,11 +94,11 @@ function initAssistance() {
         .then(data => {
             initMessage.textContent = "✔ " + data.message;
             initMessage.className = "success";
-            markingSection.style.display = "block";
             
             document.getElementById("plan").disabled = true;
             document.getElementById("date").disabled = true;
             document.getElementById("btnInit").disabled = true;
+            document.getElementById("btnStartScanner").disabled = false;
         })
         .catch(err => {
             initMessage.textContent = err.message;

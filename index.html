@@ -4,8 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Tomador de Asistencia</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
 
-        <!-- Selector de plan -->
+<body>
+    <div class="container">
+        <h1>Tomador de Asistencia</h1>
+
+        <!-- Paso 1: Inicialización -->
         <label for="plan">Plan</label>
         <select id="plan">
             <option value="">-- Seleccione un plan --</option>
@@ -23,31 +29,33 @@
 
         <hr />
 
-        <!-- Sección de Escaneo -->
-        <div id="markingSection" style="display:none;">
-            <h3>2. Escanee el Código QR</h3>
+        <!-- Paso 2: Escaneo -->
+        <div id="markingSection">
+            <h3>2. Registro por QR</h3>
             
             <div id="scannerWrapper">
                 <div id="reader"></div>
-                <!-- Overlay de éxito -->
+                
+                <!-- Overlay de éxito refinado -->
                 <div id="successOverlay">
-                    <div class="checkmark">✓</div>
+                    <div class="success-container">
+                        <div class="checkmark-circle">✓</div>
+                        <div id="scanResultName" style="font-weight:bold; color:#188038;"></div>
+                        <button class="next-btn" onclick="resetForNext()">Siguiente Alumna</button>
+                    </div>
                 </div>
             </div>
 
-            <div style="margin-top: 15px;">
-                <label for="carnet">Ingreso manual (Hash)</label>
-                <input type="text" id="carnet" placeholder="O ingrese el hash manualmente" onkeypress="handleEnter(event)" />
-                <button onclick="submitAssistance()">Registrar</button>
-            </div>
+            <button id="btnStartScanner" disabled onclick="startScanner()">Abrir Escáner</button>
+            <button id="btnStopScanner" style="display:none; background-color:#d93025;" onclick="stopScannerExplicit()">Cerrar Cámara</button>
             
             <div id="message"></div>
         </div>
 
         <hr />
         
-        <!-- Lista de alumnas para visualización -->
-        <button onclick="loadStudents()">Ver listado de alumnas</button>
+        <!-- Vista de alumnas -->
+        <button class="secondary-btn" onclick="loadStudents()">Ver listado de alumnas</button>
         <ul id="studentList"></ul>
     </div>
 

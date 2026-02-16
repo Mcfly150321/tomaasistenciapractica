@@ -81,9 +81,9 @@ def initialize_assistance(
             models.Assistance.date == date
         ).first()
 
-        if existing:
-            existing.assistance = False
-        else:
+        # Si NO existe, lo creamos como False.
+        # Si YA existe, NO HACEMOS NADA (así no borramos los "Presente" ya marcados)
+        if not existing:
             db.add(models.Assistance(
                 student_id=student.carnet,
                 date=date,
