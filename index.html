@@ -3,60 +3,64 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Tomador de Asistencia</title>
+    <title>Módulo de Asistencia - Scanner</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Tomador de Asistencia</h1>
+    <div class="container-scanner">
+        <h1 class="title-scanner">Tomador de Asistencia</h1>
 
         <!-- Paso 1: Inicialización -->
-        <label for="plan">Plan</label>
-        <select id="plan">
-            <option value="">-- Seleccione un plan --</option>
-            <option value="diario">Diario</option>
-            <option value="ejecutivo">Ejecutivo</option>
-            <option value="fin_de_semana">Fin de semana</option>
-        </select>
+        <div class="setup-section-scanner">
+            <label for="plan-scanner">Plan</label>
+            <select id="plan-scanner">
+                <option value="">-- Seleccione un plan --</option>
+                <option value="diario">Diario</option>
+                <option value="ejecutivo">Ejecutivo</option>
+                <option value="fin_de_semana">Fin de semana</option>
+            </select>
 
-        <label for="date">Fecha</label>
-        <input type="date" id="date" />
+            <label for="date-scanner">Fecha</label>
+            <input type="date" id="date-scanner" />
 
-        <button id="btnInit" onclick="initAssistance()">1. Iniciar Asistencia del Día</button>
+            <button id="btnInit-scanner" onclick="initAssistanceScanner()">1. Iniciar Asistencia del Día</button>
 
-        <div id="initMessage"></div>
+            <div id="initMessage-scanner"></div>
+        </div>
 
-        <hr />
+        <hr class="separator-scanner" />
 
         <!-- Paso 2: Escaneo -->
-        <div id="markingSection">
-            <h3>2. Registro por QR</h3>
+        <div id="markingSection-scanner">
+            <h3 class="subtitle-scanner">2. Registro por QR</h3>
             
-            <div id="scannerWrapper">
-                <div id="reader"></div>
+            <div id="scannerWrapper-scanner">
+                <div id="reader-scanner"></div>
                 
                 <!-- Overlay de éxito refinado -->
-                <div id="successOverlay">
-                    <div class="success-container">
-                        <div class="checkmark-circle">✓</div>
-                        <div id="scanResultName" style="font-weight:bold; color:#188038;"></div>
-                        <button class="next-btn" onclick="resetForNext()">Siguiente Alumna</button>
+                <div id="successOverlay-scanner">
+                    <div class="success-container-scanner">
+                        <div class="checkmark-circle-scanner">✓</div>
+                        <div id="scanResultName-scanner" class="result-name-scanner"></div>
+                        <button class="next-btn-scanner" onclick="resetForNextScanner()">Siguiente Alumna</button>
                     </div>
                 </div>
             </div>
 
-            <button id="btnStartScanner" disabled onclick="startScanner()">Abrir Escáner</button>
-            <button id="btnStopScanner" style="display:none; background-color:#d93025;" onclick="stopScannerExplicit()">Cerrar Cámara</button>
+            <div class="controls-scanner">
+                <button id="btnStartScanner-scanner" disabled onclick="startScannerAsistencia()">Abrir Escáner</button>
+                <button id="btnStopScanner-scanner" style="display:none; background-color:#d93025;" onclick="stopScannerExplicitScanner()">Cerrar Cámara</button>
+            </div>
             
-            <div id="message"></div>
+            <div id="message-scanner"></div>
         </div>
 
-        <hr />
+        <hr class="separator-scanner" />
         
         <!-- Vista de alumnas -->
-        <button class="secondary-btn" onclick="loadStudents()">Ver listado de alumnas</button>
-        <ul id="studentList"></ul>
+        <button class="secondary-btn-scanner" onclick="loadStudentsScanner()">Ver listado de alumnas</button>
+        <ul id="studentList-scanner" class="student-list-scanner"></ul>
     </div>
 
     <!-- Scripts -->
