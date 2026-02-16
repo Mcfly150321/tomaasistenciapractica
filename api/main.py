@@ -58,40 +58,68 @@ def read_students(
     return query.all()
 
 
+@router.post("/assistance/init")
+def initialize_assistance(
+    plan: str,
+    date: date,
+    db: Session = Depends(get_db)
+):
+    # Obtener todas las alumnas activas del plan
+    students = db.query(models.Students).filter(
+        models.Students.plan == plan,
+        models.Students.is_active.is_(True),
+        models.Students.is_graduated.is_(False)
+    ).all()
+
+    if not students:
+        raise HTTPException(status_code=404, detail="No se encontraron alumnas para este plan")
+
+    for student in students:
+        # Buscar si ya existe el registro para esa fecha
+        existing = db.query(models.Assistance).filter(
+            models.Assistance.student_id == student.carnet,
+            models.Assistance.date == date
+        ).first()
+
+        if existing:
+            existing.assistance = False
+        else:
+            db.add(models.Assistance(
+                student_id=student.carnet,
+                date=date,
+                assistance=False
+            ))
+
+    db.commit()
+    return {"status": "ok", "message": f"Asistencia iniciada para {len(students)} alumnas"}
+
+
 @router.post("/assistance/{carnet}")
 def take_assistance(
     carnet: str,
     date: date,
-    assistance: bool = Query(True),
     db: Session = Depends(get_db)
 ):
-    student = db.query(models.Students).filter(
-        models.Students.carnet == carnet
-    ).first()
-
-    if not student:
-        raise HTTPException(status_code=404, detail="Student not found")
-
-    existing = db.query(models.Assistance).filter(
+    # Verificar que el registro exista (significa que el carnet pertenece al plan iniciado)
+    record = db.query(models.Assistance).filter(
         models.Assistance.student_id == carnet,
         models.Assistance.date == date
     ).first()
 
-    if existing:
-        existing.assistance = assistance
-    else:
-        db.add(models.Assistance(
-            student_id=carnet,
-            date=date,
-            assistance=assistance
-        ))
+    if not record:
+        raise HTTPException(
+            status_code=400, 
+            detail="La alumna no pertenece al plan seleccionado o no se ha iniciado la asistencia para este día"
+        )
 
+    record.assistance = True
     db.commit()
+    
     return {
         "status": "ok",
         "student_id": carnet,
         "date": date.isoformat(),
-        "assistance": assistance
+        "assistance": True
     }
 
 

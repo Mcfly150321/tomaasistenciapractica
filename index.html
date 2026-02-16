@@ -60,26 +60,36 @@
 
         <!-- Selector de plan -->
         <label for="plan">Plan</label>
-        <select id="plan" onchange="loadStudents()">
+        <select id="plan">
             <option value="">-- Seleccione un plan --</option>
             <option value="diario">Diario</option>
             <option value="ejecutivo">Ejecutivo</option>
             <option value="fin_de_semana">Fin de semana</option>
         </select>
 
-        <!-- Lista de alumnas -->
-        <ul id="studentList"></ul>
+        <label for="date">Fecha</label>
+        <input type="date" id="date" />
+
+        <button onclick="initAssistance()">1. Iniciar Asistencia del Día</button>
+
+        <div id="initMessage"></div>
 
         <hr />
 
         <!-- Tomar asistencia -->
-        <label for="carnet">Carnet</label>
-        <input type="text" id="carnet" placeholder="Ingrese el carnet" />
-        <label for="date">Fecha</label>
-        <input type="date" id="date" />
-        <button onclick="submitAssistance()">Tomar asistencia</button>
+        <div id="markingSection" style="display:none;">
+            <h3>2. Registrar Asistencia (Carnet)</h3>
+            <label for="carnet">Carnet</label>
+            <input type="text" id="carnet" placeholder="Ingrese el carnet" onkeypress="handleEnter(event)" />
+            <button onclick="submitAssistance()">Marcar Presente</button>
+            <div id="message"></div>
+        </div>
 
-        <div id="message"></div>
+        <hr />
+        
+        <!-- Lista de alumnas para visualización -->
+        <button onclick="loadStudents()">Ver listado de alumnas</button>
+        <ul id="studentList"></ul>
     </div>
 
 <script src="/app.js"></script>
