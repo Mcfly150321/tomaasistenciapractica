@@ -66,10 +66,10 @@
 #scannerWrapper-scanner {
     position: relative;
     width: 100%;
-    max-width: 420px; /* Un poco más grande como se solicitó */
+    max-width: 420px;
     margin: 20px auto;
     border: 5px solid #1a73e8;
-    border-radius: 40px; /* Bordes muy redondeados */
+    border-radius: 40px;
     overflow: hidden;
     aspect-ratio: 1/1;
     background: #000;
@@ -84,17 +84,17 @@
 /* Customizing the inner scanning frame (Viewfinder) */
 #reader-scanner__qr_code_scanner_guide {
     border: 5px solid #1a73e8 !important;
-    border-radius: 40px !important; /* Esquinas redondeadas para el marco interno */
-    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.4); /* Efecto oscurecer fuera del cuadro */
+    border-radius: 40px !important;
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
 }
 
-/* Ocultar bordes por defecto de la librería si aparecen */
 #reader-scanner__qr_scan_region > div {
     border: none !important;
 }
 
-#successOverlay-scanner {
+/* Result Overlay (Success/Error) */
+#resultOverlay-scanner {
     position: absolute;
     top: 0;
     left: 0;
@@ -109,11 +109,11 @@
     backdrop-filter: blur(10px);
 }
 
-#successOverlay-scanner.active {
+#resultOverlay-scanner.active {
     display: flex;
 }
 
-.success-container-scanner {
+.result-container-scanner {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -122,35 +122,62 @@
     text-align: center;
 }
 
-.checkmark-circle-scanner {
+/* Icons and Animations */
+.icon-circle-scanner {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: #188038;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(24, 128, 56, 0.3);
     animation: popScale-scanner 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-.checkmark-svg-scanner {
+.success-bg-scanner {
+    background: #188038;
+    box-shadow: 0 4px 15px rgba(24, 128, 56, 0.3);
+}
+
+.error-bg-scanner {
+    background: #d93025;
+    box-shadow: 0 4px 15px rgba(217, 48, 37, 0.3);
+}
+
+.icon-svg-scanner {
     width: 80px;
     height: 80px;
 }
 
-.checkmark-check-scanner {
+/* Drawing Animations */
+.checkmark-path-scanner {
     stroke: white;
     stroke-width: 5;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 48;
     stroke-dashoffset: 48;
-    animation: drawCheck-scanner 0.5s cubic-bezier(0.65, 0, 0.45, 1) 0.3s forwards;
+    animation: drawIcon-scanner 0.5s cubic-bezier(0.65, 0, 0.45, 1) 0.3s forwards;
 }
 
-@keyframes drawCheck-scanner {
+.error-x-path1-scanner, .error-x-path2-scanner {
+    stroke: white;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+}
+
+.error-x-path1-scanner {
+    animation: drawIcon-scanner 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.3s forwards;
+}
+
+.error-x-path2-scanner {
+    animation: drawIcon-scanner 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.5s forwards;
+}
+
+@keyframes drawIcon-scanner {
     100% { stroke-dashoffset: 0; }
 }
 
@@ -162,17 +189,24 @@
 .result-name-scanner {
     font-size: 20px;
     font-weight: 700;
-    color: #188038;
+    color: #3c4043;
     text-align: center;
     margin-bottom: 20px;
     padding: 0 20px;
 }
 
+/* Success/Error Color variations for text */
+.success-text-scanner { color: #188038; }
+.error-text-scanner { color: #d93025; }
+
 .next-btn-scanner {
-    background-color: #188038 !important;
     width: auto !important;
     padding: 12px 40px !important;
 }
+
+/* Button variants */
+.btn-success-scanner { background-color: #188038 !important; }
+.btn-error-scanner { background-color: #d93025 !important; }
 
 /* Status Messages */
 .success-scanner {
@@ -237,10 +271,9 @@
         font-size: 20px;
     }
 
-    .checkmark-circle-scanner {
+    .icon-circle-scanner {
         width: 100px;
         height: 100px;
-        font-size: 50px;
     }
 }
 

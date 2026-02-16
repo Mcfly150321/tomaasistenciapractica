@@ -38,17 +38,28 @@
             <div id="scannerWrapper-scanner">
                 <div id="reader-scanner"></div>
                 
-                <!-- Overlay de éxito refinado -->
-                <div id="successOverlay-scanner">
-                    <div class="success-container-scanner">
-                        <div class="checkmark-circle-scanner">
-                            <svg class="checkmark-svg-scanner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                <circle class="checkmark-circle-bg-scanner" cx="26" cy="26" r="25" fill="none"/>
-                                <path class="checkmark-check-scanner" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                <!-- Overlay de resultado (Éxito o Error) -->
+                <div id="resultOverlay-scanner">
+                    <div class="result-container-scanner">
+                        <!-- Círculo de Éxito -->
+                        <div id="successCircle-scanner" class="icon-circle-scanner success-bg-scanner">
+                            <svg class="icon-svg-scanner" viewBox="0 0 52 52">
+                                <circle cx="26" cy="26" r="25" fill="none"/>
+                                <path class="checkmark-path-scanner" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
                             </svg>
                         </div>
+                        
+                        <!-- Círculo de Error -->
+                        <div id="errorCircle-scanner" class="icon-circle-scanner error-bg-scanner" style="display:none;">
+                            <svg class="icon-svg-scanner" viewBox="0 0 52 52">
+                                <circle cx="26" cy="26" r="25" fill="none"/>
+                                <path class="error-x-path1-scanner" fill="none" d="M16 16l20 20"/>
+                                <path class="error-x-path2-scanner" fill="none" d="M36 16l-20 20"/>
+                            </svg>
+                        </div>
+
                         <div id="scanResultName-scanner" class="result-name-scanner"></div>
-                        <button class="next-btn-scanner" onclick="resetForNextScanner()">Siguiente Alumna</button>
+                        <button id="btnNext-scanner" class="next-btn-scanner" onclick="resetForNextScanner()">Siguiente Alumna</button>
                     </div>
                 </div>
             </div>
