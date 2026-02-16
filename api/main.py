@@ -94,22 +94,33 @@ def initialize_assistance(
     return {"status": "ok", "message": f"Asistencia iniciada para {len(students)} alumnas"}
 
 
-@router.post("/assistance/{carnet}")
+@router.post("/assistance/{identifier}")
 def take_assistance(
-    carnet: str,
+    identifier: str,
     date: date,
     db: Session = Depends(get_db)
 ):
-    # Verificar que el registro exista (significa que el carnet pertenece al plan iniciado)
+    # Buscar a la alumna por su hash_carnet
+    student = db.query(models.Students).filter(
+        models.Students.hash_carnet == identifier
+    ).first()
+
+    if not student:
+        raise HTTPException(
+            status_code=404, 
+            detail="Código hash no reconocido o alumna no encontrada"
+        )
+
+    # Verificar que el registro de asistencia exista para esa alumna y fecha
     record = db.query(models.Assistance).filter(
-        models.Assistance.student_id == carnet,
+        models.Assistance.student_id == student.carnet,
         models.Assistance.date == date
     ).first()
 
     if not record:
         raise HTTPException(
             status_code=400, 
-            detail="La alumna no pertenece al plan seleccionado o no se ha iniciado la asistencia para este día"
+            detail=f"La alumna {student.names} no pertenece al plan iniciado para este día"
         )
 
     record.assistance = True
@@ -117,7 +128,8 @@ def take_assistance(
     
     return {
         "status": "ok",
-        "student_id": carnet,
+        "student_id": student.carnet,
+        "student_name": f"{student.names} {student.lastnames}",
         "date": date.isoformat(),
         "assistance": True
     }

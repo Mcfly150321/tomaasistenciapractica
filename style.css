@@ -1,0 +1,121 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+}
+
+.container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+select, input, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+li {
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.success {
+    color: #27ae60;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.error {
+    color: #e74c3c;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Scanner Styles */
+#scannerWrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#reader {
+    width: 100%;
+    background: #000;
+}
+
+#successOverlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(46, 204, 113, 0.4);
+    z-index: 10;
+}
+
+#successOverlay.active {
+    display: flex;
+}
+
+.checkmark {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #2ecc71;
+    color: white;
+    font-size: 48px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    animation: pop 0.4s ease-out forwards;
+}
+
+@keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}

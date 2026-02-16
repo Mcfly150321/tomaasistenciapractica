@@ -5,59 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Tomador de Asistencia</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 40px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        select, input, button {
-            width: 100%;
-            padding: 8px;
-            margin-top: 8px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 10px;
-        }
-
-        li {
-            padding: 6px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .success {
-            color: green;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .error {
-            color: red;
-            margin-top: 10px;
-            text-align: center;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h1>Tomador de Asistencia</h1>
-
         <!-- Selector de plan -->
         <label for="plan">Plan</label>
         <select id="plan">
@@ -70,18 +17,30 @@
         <label for="date">Fecha</label>
         <input type="date" id="date" />
 
-        <button onclick="initAssistance()">1. Iniciar Asistencia del Día</button>
+        <button id="btnInit" onclick="initAssistance()">1. Iniciar Asistencia del Día</button>
 
         <div id="initMessage"></div>
 
         <hr />
 
-        <!-- Tomar asistencia -->
+        <!-- Sección de Escaneo -->
         <div id="markingSection" style="display:none;">
-            <h3>2. Registrar Asistencia (Carnet)</h3>
-            <label for="carnet">Carnet</label>
-            <input type="text" id="carnet" placeholder="Ingrese el carnet" onkeypress="handleEnter(event)" />
-            <button onclick="submitAssistance()">Marcar Presente</button>
+            <h3>2. Escanee el Código QR</h3>
+            
+            <div id="scannerWrapper">
+                <div id="reader"></div>
+                <!-- Overlay de éxito -->
+                <div id="successOverlay">
+                    <div class="checkmark">✓</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <label for="carnet">Ingreso manual (Hash)</label>
+                <input type="text" id="carnet" placeholder="O ingrese el hash manualmente" onkeypress="handleEnter(event)" />
+                <button onclick="submitAssistance()">Registrar</button>
+            </div>
+            
             <div id="message"></div>
         </div>
 
@@ -92,7 +51,9 @@
         <ul id="studentList"></ul>
     </div>
 
-<script src="/app.js"></script>
+    <!-- Scripts -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="/app.js"></script>
 
 </body>
 </html>
