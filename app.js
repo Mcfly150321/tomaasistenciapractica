@@ -8,6 +8,7 @@ function loadStudents() {
     if (!plan) return;
 
     fetch(`${API_URL}/students/?plan=${plan}`)
+
         .then(res => {
             if (!res.ok) throw new Error("Error backend");
             return res.json();
