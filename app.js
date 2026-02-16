@@ -7,8 +7,11 @@ function loadStudents() {
 
     if (!plan) return;
 
-    fetch(`${API_URL}/students?plan=${plan}`)
-        .then(res => res.json())
+    fetch(`${API_URL}/students/?plan=${plan}`)
+        .then(res => {
+            if (!res.ok) throw new Error("Error backend");
+            return res.json();
+        })
         .then(data => {
             if (data.length === 0) {
                 list.innerHTML = "<li>No hay alumnas</li>";
@@ -42,7 +45,7 @@ function submitAssistance() {
     }
 
     fetch(
-        `${API_BASE}/assistance/${carnet}?date=${date}&assistance=true`,
+        `${API_URL}/assistance/${carnet}?date=${date}&assistance=true`,
         { method: "POST" }
     )
     .then(res => {
@@ -59,4 +62,3 @@ function submitAssistance() {
         message.className = "error";
     });
 }
-
