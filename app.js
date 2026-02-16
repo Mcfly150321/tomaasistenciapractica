@@ -1,8 +1,28 @@
 const API_URL = "/api";
 let html5QrCode = null;
 let isProcessing = false;
-const SCAN_SOUND = new Audio('/assets/confirm.mp3');
-SCAN_SOUND.load(); // Forzar precarga
+
+// Audio Context se crea globalmente pero se activa tras la primera interacción
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playBeep() {
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    oscillator.type = "sine"; // Sonido limpio
+    oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // La (A5) - Pitido claro
+
+    // Envolvente de volumen (evita el "clic")
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.12);
+}
 
 async function startScanner() {
     if (html5QrCode) return;
@@ -44,8 +64,9 @@ async function onScanSuccess(decodedText) {
     if (isProcessing) return;
     isProcessing = true;
 
-    // PITIDO INMEDIATO (Feedback instantáneo de escaneo)
-    SCAN_SOUND.play().catch(e => console.warn("Error audio:", e));
+    // PITIDO SINTETIZADO (Instantáneo, sin latencia de archivo)
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    playBeep();
 
     // DETENER SCANNER INMEDIATAMENTE para evitar múltiples peticiones
     if (html5QrCode) {
