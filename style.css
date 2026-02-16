@@ -81,6 +81,19 @@
     height: 100%;
 }
 
+/* Customizing the inner scanning frame (Viewfinder) */
+#reader-scanner__qr_code_scanner_guide {
+    border: 5px solid #1a73e8 !important;
+    border-radius: 40px !important; /* Esquinas redondeadas para el marco interno */
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.4); /* Efecto oscurecer fuera del cuadro */
+    transition: all 0.3s ease;
+}
+
+/* Ocultar bordes por defecto de la librería si aparecen */
+#reader-scanner__qr_scan_region > div {
+    border: none !important;
+}
+
 #successOverlay-scanner {
     position: absolute;
     top: 0;

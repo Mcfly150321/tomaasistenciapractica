@@ -30,7 +30,22 @@ async function startScannerAsistencia() {
     if (html5QrCode_Asistencia) return;
     
     html5QrCode_Asistencia = new Html5Qrcode("reader-scanner");
-    const config = { fps: 15, qrbox: { width: 280, height: 280 } };
+    
+    // Función para calcular un cuadro de escaneo siempre cuadrado y responsivo
+    const qrboxFunction = (viewfinderWidth, viewfinderHeight) => {
+        let minEdgeContext = Math.min(viewfinderWidth, viewfinderHeight);
+        let qrboxSize = Math.floor(minEdgeContext * 0.7);
+        return {
+            width: qrboxSize,
+            height: qrboxSize
+        };
+    };
+
+    const config = { 
+        fps: 20, 
+        qrbox: qrboxFunction,
+        aspectRatio: 1.0 // Fuerza que el visor sea cuadrado
+    };
 
     document.getElementById("btnStartScanner-scanner").style.display = "none";
     document.getElementById("btnStopScanner-scanner").style.display = "block";
