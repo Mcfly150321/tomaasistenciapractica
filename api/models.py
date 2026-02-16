@@ -42,7 +42,7 @@ class Assistance(Base):
     date = Column(Date)
     assistance = Column(Boolean, default=False)
 
-    student = relationship("Student", back_populates="assistances")
+    student = relationship("Students", back_populates="assistances")
 
     __table_args__ = (
         UniqueConstraint('student_id', 'date', name='_assistance_student_date_uc'),
