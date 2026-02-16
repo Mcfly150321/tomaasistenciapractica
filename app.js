@@ -1,12 +1,15 @@
 const API_URL = "/api";
 let html5QrCode = null;
-let isScanned = false;
+let isProcessing = false;
 
 async function startScanner() {
     if (html5QrCode) return;
     
     html5QrCode = new Html5Qrcode("reader");
-    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+    const config = { fps: 15, qrbox: { width: 250, height: 250 } };
+
+    document.getElementById("btnStartScanner").style.display = "none";
+    document.getElementById("btnStopScanner").style.display = "block";
 
     try {
         await html5QrCode.start(
@@ -18,29 +21,57 @@ async function startScanner() {
         console.error("No se pudo iniciar la cámara", err);
         document.getElementById("message").textContent = "Error: No se puede acceder a la cámara";
         document.getElementById("message").className = "error";
+        stopScannerExplicit();
     }
 }
 
-function onScanSuccess(decodedText) {
-    if (isScanned) return;
-    isScanned = true;
+async function stopScannerExplicit() {
+    if (html5QrCode) {
+        try {
+            await html5QrCode.stop();
+        } catch (e) {
+            console.warn("Error al detener scanner", e);
+        }
+        html5QrCode = null;
+    }
+    document.getElementById("btnStartScanner").style.display = "block";
+    document.getElementById("btnStopScanner").style.display = "none";
+}
 
-    // Colocar el hash en el input (opcional visualmente)
-    document.getElementById("carnet").value = decodedText;
-    
-    // Mostrar overlay de éxito
-    const overlay = document.getElementById("successOverlay");
-    overlay.classList.add("active");
+async function onScanSuccess(decodedText) {
+    if (isProcessing) return;
+    isProcessing = true;
+
+    // DETENER SCANNER INMEDIATAMENTE para evitar múltiples peticiones
+    if (html5QrCode) {
+        try {
+            await html5QrCode.stop();
+            html5QrCode = null;
+        } catch (e) { console.error(e); }
+    }
 
     // Ejecutar envío
-    submitAssistance(decodedText).finally(() => {
-        // Reiniciar para el siguiente después de un breve delay
-        setTimeout(() => {
-            overlay.classList.remove("active");
-            document.getElementById("carnet").value = "";
-            isScanned = false;
-        }, 1500);
+    submitAssistance(decodedText).then((data) => {
+        if (data) {
+            // Mostrar overlay de éxito
+            document.getElementById("scanResultName").textContent = data.student_name;
+            document.getElementById("successOverlay").classList.add("active");
+        } else {
+            // Si falló el envío por alguna validación, permitimos resetear
+            isProcessing = false;
+            startScanner(); // Reiniciamos si fue un error de "no pertenece al plan"
+        }
+    }).catch(() => {
+        isProcessing = false;
+        startScanner();
     });
+}
+
+function resetForNext() {
+    document.getElementById("successOverlay").classList.remove("active");
+    document.getElementById("message").textContent = "";
+    isProcessing = false;
+    startScanner(); // Abre la cámara para el siguiente
 }
 
 function initAssistance() {
@@ -68,9 +99,6 @@ function initAssistance() {
             document.getElementById("plan").disabled = true;
             document.getElementById("date").disabled = true;
             document.getElementById("btnInit").disabled = true;
-
-            // Iniciar escáner
-            startScanner();
         })
         .catch(err => {
             initMessage.textContent = err.message;
@@ -78,19 +106,12 @@ function initAssistance() {
         });
 }
 
-function handleEnter(event) {
-    if (event.key === "Enter") submitAssistance();
-}
-
 /**
- * @param {string} hash - Opcional, si viene del scanner
+ * @param {string} identifier - El hash del QR
  */
-function submitAssistance(hash = null) {
-    const identifier = hash || document.getElementById("carnet").value.trim();
+function submitAssistance(identifier) {
     const date = document.getElementById("date").value;
     const message = document.getElementById("message");
-
-    if (!identifier) return Promise.resolve();
 
     message.textContent = "Registrando...";
     message.className = "";
@@ -106,11 +127,12 @@ function submitAssistance(hash = null) {
     .then((data) => {
         message.textContent = `Asistencia: ${data.student_name} ✔`;
         message.className = "success";
-        if (!hash) document.getElementById("carnet").value = "";
+        return data;
     })
     .catch(err => {
         message.textContent = err.message;
         message.className = "error";
+        return null;
     });
 }
 
@@ -135,7 +157,7 @@ function loadStudents() {
 
             data.forEach(student => {
                 const li = document.createElement("li");
-                li.textContent = `${student.names} ${student.lastnames} — ${student.carnet}`;
+                li.innerHTML = `<span>${student.names} ${student.lastnames}</span> <small>${student.carnet}</small>`;
                 list.appendChild(li);
             });
         })

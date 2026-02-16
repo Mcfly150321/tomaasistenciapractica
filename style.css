@@ -1,121 +1,174 @@
 body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
+    font-family: 'Inter', Arial, sans-serif;
+    background: #f0f2f5;
+    color: #333;
+    margin: 0;
 }
 
 .container {
     max-width: 500px;
     margin: 40px auto;
     background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
 h1 {
     text-align: center;
-    color: #2c3e50;
+    color: #1a73e8;
+    margin-bottom: 30px;
+}
+
+h3 {
+    color: #5f6368;
+    margin-top: 0;
 }
 
 select, input, button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-top: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
     box-sizing: border-box;
+    font-size: 16px;
 }
 
 button {
-    background-color: #3498db;
+    background-color: #1a73e8;
     color: white;
     border: none;
     cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
 button:hover {
-    background-color: #2980b9;
+    background-color: #1557b0;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 button:disabled {
-    background-color: #bdc3c7;
+    background-color: #e8eaed;
+    color: #9aa0a6;
     cursor: not-allowed;
+}
+
+.secondary-btn {
+    background-color: white;
+    color: #1a73e8;
+    border: 1px solid #dadce0;
+    margin-top: 20px;
+}
+
+.secondary-btn:hover {
+    background-color: #f8f9fa;
 }
 
 ul {
     list-style: none;
     padding: 0;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 li {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
+    padding: 12px;
+    border-bottom: 1px solid #f1f3f4;
+    display: flex;
+    justify-content: space-between;
 }
 
 .success {
-    color: #27ae60;
-    margin-top: 10px;
+    color: #188038;
+    margin-top: 15px;
     text-align: center;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .error {
-    color: #e74c3c;
-    margin-top: 10px;
+    color: #d93025;
+    margin-top: 15px;
     text-align: center;
-    font-weight: bold;
+    font-weight: 500;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #e8eaed;
+    margin: 30px 0;
 }
 
 /* Scanner Styles */
 #scannerWrapper {
     position: relative;
     width: 100%;
-    max-width: 300px;
-    margin: 20px auto;
-    border: 2px solid #3498db;
-    border-radius: 8px;
-    overflow: hidden;
+    max-width: 320px;
+    margin: 25px auto;
+    border: 4px solid #1a73e8;
+    border-radius: 30px; /* Bordes muy curvos */
+    overflow: hidden; /* Importante para que el video respete el radio */
+    aspect-ratio: 1/1;
+    background: #000;
+    box-shadow: 0 8px 20px rgba(26, 115, 232, 0.2);
 }
 
 #reader {
     width: 100%;
-    background: #000;
+    height: 100%;
 }
 
 #successOverlay {
     position: absolute;
     inset: 0;
     display: none;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(46, 204, 113, 0.4);
-    z-index: 10;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 20;
+    backdrop-filter: blur(4px);
 }
 
 #successOverlay.active {
     display: flex;
 }
 
-.checkmark {
-    width: 90px;
-    height: 90px;
+.success-container {
+    text-align: center;
+}
+
+.checkmark-circle {
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    background: #2ecc71;
-    color: white;
-    font-size: 48px;
-    font-weight: bold;
+    background: #188038;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    animation: pop 0.4s ease-out forwards;
+    color: white;
+    font-size: 50px;
+    margin: 0 auto 20px;
+    animation: popAndPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-@keyframes pop {
-    0% { transform: scale(0); opacity: 0; }
-    70% { transform: scale(1.2); }
-    100% { transform: scale(1); opacity: 1; }
+@keyframes popAndPulse {
+    0% { transform: scale(0); box-shadow: 0 0 0 0 rgba(24, 128, 56, 0.4); }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); box-shadow: 0 0 0 20px rgba(24, 128, 56, 0); }
+}
+
+.next-btn {
+    background-color: #188038;
+    width: auto;
+    padding: 12px 30px;
+    margin-top: 20px;
+}
+
+.next-btn:hover {
+    background-color: #13652b;
 }
