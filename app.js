@@ -2,6 +2,7 @@ const API_URL = "/api";
 let html5QrCode = null;
 let isProcessing = false;
 const SCAN_SOUND = new Audio('/assets/confirm.mp3');
+SCAN_SOUND.load(); // Forzar precarga
 
 async function startScanner() {
     if (html5QrCode) return;
@@ -43,6 +44,9 @@ async function onScanSuccess(decodedText) {
     if (isProcessing) return;
     isProcessing = true;
 
+    // PITIDO INMEDIATO (Feedback instantáneo de escaneo)
+    SCAN_SOUND.play().catch(e => console.warn("Error audio:", e));
+
     // DETENER SCANNER INMEDIATAMENTE para evitar múltiples peticiones
     if (html5QrCode) {
         try {
@@ -54,9 +58,6 @@ async function onScanSuccess(decodedText) {
     // Ejecutar envío
     submitAssistance(decodedText).then((data) => {
         if (data) {
-            // Pitido de confirmación
-            SCAN_SOUND.play().catch(e => console.warn("Error audio:", e));
-
             // Mostrar overlay de éxito
             document.getElementById("scanResultName").textContent = data.student_name;
             document.getElementById("successOverlay").classList.add("active");
