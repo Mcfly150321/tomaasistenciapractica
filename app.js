@@ -217,7 +217,7 @@ function submitAssistanceScanner(identifier) {
     message.className = "";
 
     return fetch(
-        `${API_URL_SCANNER}/assistance/${identifier}?date=${date}`,
+        `${API_URL_SCANNER}/assistance/${encodeURIComponent(identifier)}?date=${date}`,
         { method: "POST" }
     )
     .then(res => {

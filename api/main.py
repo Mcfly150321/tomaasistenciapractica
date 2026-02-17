@@ -130,6 +130,7 @@ def take_assistance(
         "status": "ok",
         "student_id": student.carnet,
         "student_name": f"{student.names} {student.lastnames}",
+        "thumbnail_url": student.thumbnail_url,
         "date": date.isoformat(),
         "assistance": True
     }
