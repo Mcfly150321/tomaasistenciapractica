@@ -254,6 +254,83 @@
     border: 1.5px solid #dadce0 !important;
 }
 
+/* Recent Scans Cards */
+.recent-scans-wrapper-scanner {
+    margin-top: 30px;
+}
+
+.recent-scans-title-scanner {
+    color: #5f6368;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+}
+
+#recentScansContainer-scanner {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.student-card-scanner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    padding: 12px 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+    animation: slideIn-scanner 0.4s ease-out;
+}
+
+@keyframes slideIn-scanner {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.student-avatar-scanner {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    overflow: hidden;
+    border: 2px solid #e2e8f0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.student-avatar-scanner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.student-avatar-scanner span {
+    font-size: 24px;
+    color: #94a3b8;
+}
+
+.student-info-scanner {
+    flex-grow: 1;
+}
+
+.student-info-scanner strong {
+    display: block;
+    color: #202124;
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.student-info-scanner small {
+    display: block;
+    color: #64748b;
+    font-size: 13px;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
     .container-scanner {

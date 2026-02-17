@@ -98,6 +98,11 @@ async function onScanSuccessAsistencia(decodedText) {
         submitAssistanceScanner(decodedText).then((data) => {
             if (data) {
                 playBeepScanner();
+                // Guardamos metadatos en el elemento para usarlos en showResultUI
+                const resultName = document.getElementById("scanResultName-scanner");
+                resultName.dataset.carnet = data.student_id;
+                resultName.dataset.thumb = data.thumbnail_url || "";
+                
                 showResultUI(true, data.student_name);
             } else {
                 playErrorBeepScanner();
@@ -126,12 +131,44 @@ function showResultUI(isSuccess, studentName) {
         resultName.className = "result-name-scanner success-text-scanner";
         btnNext.textContent = "Siguiente Alumna";
         btnNext.className = "next-btn-scanner btn-success-scanner";
+
+        // AGREGAR CARD A REGISTROS RECIENTES
+        // Buscamos los datos que pasamos al resolver la promesa
+        addRecentScanCard(studentName, resultName.dataset.carnet, resultName.dataset.thumb);
     } else {
         successCircle.style.display = "none";
         errorCircle.style.display = "flex";
         resultName.className = "result-name-scanner error-text-scanner";
         btnNext.textContent = "Reintentar";
         btnNext.className = "next-btn-scanner btn-error-scanner";
+    }
+}
+
+function addRecentScanCard(name, carnet, thumb) {
+    const container = document.getElementById("recentScansContainer-scanner");
+    if (!container) return;
+
+    const card = document.createElement("div");
+    card.className = "student-card-scanner";
+    
+    card.innerHTML = `
+        <div class="student-avatar-scanner">
+            ${thumb 
+                ? `<img src="${thumb}" alt="${name}">` 
+                : `<span>📷</span>`}
+        </div>
+        <div class="student-info-scanner">
+            <strong>${name}</strong>
+            <small>Carnet: ${carnet}</small>
+        </div>
+    `;
+
+    // Insertar al principio para que el más reciente esté arriba
+    container.insertBefore(card, container.firstChild);
+
+    // Limitamos a los últimos 5 para no llenar la pantalla
+    if (container.children.length > 5) {
+        container.removeChild(container.lastChild);
     }
 }
 
